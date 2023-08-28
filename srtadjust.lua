@@ -87,11 +87,15 @@ local function printHelp()
 	io.write("\t\tsrtadjust -b [inputfile] [timeOffset] [numOffset] [displayIncr] [outputfile]\n")
 end
 
+local function printAndExit()
+	printHelp()
+	os.exit(-1)
+end
+
 local function checkInputs(input,message)
 	if not input then
 		io.stderr:write(message)
-		printHelp()
-		os.exit(-1)
+		printAndExit()
 	end
 end
 
@@ -106,36 +110,36 @@ local function checkInputArgs(inputI,timeI,numI,outputI)
 	return {arg[inputI],offset,numOffset,arg[outputI]}
 end
 
-local function checkFlags()
-	if arg[1] == "-b" then
-		checkInputs(#arg <= 6, "error: too many arguments.\n")
-		checkInputs(arg[5],"error: did not include displayIncr.\n")
-		if not tonumber(arg[5]) then checkInputs(false,"error: displayIncr is not a number.\n") end
-		local t <const> = checkInputArgs(2,3,4,6)
-		t[#t + 1] = arg[5]
-		return t
-	end
+local function lFlag()
 	checkInputs(#arg <= 5, "error: too many arguments.\n")
 	return checkInputArgs(2,3,4,5),0
 end
 
+local function bFlag()
+	checkInputs(#arg <= 6, "error: too many arguments.\n")
+	checkInputs(arg[5],"error: did not include displayIncr.\n")
+	if not tonumber(arg[5]) then checkInputs(false,"error: displayIncr is not a number.\n") end
+	local t <const> = checkInputArgs(2,3,4,6)
+	t[#t + 1] = arg[5]
+	return t
+end
+
 local function main()
 	checkInputs(arg[1],"error: did not include any arguments.\n")
-	checkInputs(not (arg[1] == "-h" or arg[1] =="--help"),"")
-	local flagsTable <const> = {["-h"] = true,["--help"] = true,["-b"] = true,["-l"] = true}
-	local input,offset <const>,numOffset <const>,output <const>,displayIncr <const> = table.unpack((flagsTable[arg[1]] and checkFlags()) or checkInputArgs(1,2,3,4))
+	local flagsTable <const> = {["-h"] = printAndExit, ["--help"] = printAndExit, ["-b"] = bFlag,["-l"] = lFlag}
+	local input,offset <const>,numOffset <const>,output <const>,displayIncr <const> = table.unpack((flagsTable[arg[1]] and flagsTable[arg[1]]()) or checkInputArgs(1,2,3,4))
 	local file = io.open(input,"r")
 	checkInputs(file,"error: cannot open file\n")
 	local text  <const> = file:read("*a")
 	file:close()
-	local output <const> = io.open(output,"w+")
-	checkInputs(output,"error: cannot open output file.\n")
+	local outputFile <const> = io.open(output,"w+")
+	checkInputs(outputFile,"error: cannot open output file.\n")
 	local t1Offset <const> = arg[1] == "-l" and 0 or offset
 	local t2Offset <const> = arg[1] == "-b" and offset + displayIncr or offset
 	for num,h1,m1,s1,ms1,h2,m2,s2,ms2,sub in text:gmatch("(%d+)%s+(%d+):(%d+):(%d+),(%d+)%s*%-%-%>%s*(%d+):(%d+):(%d+),(%d+)%s+([%g%s]-)[\n\r][\n\r]") do
 		local t1 <const> = getMils(h1,m1,s1,ms1) + t1Offset
 		local t2 <const> = getMils(h2,m2,s2,ms2) + t2Offset
-		writeSub(num + numOffset,t1,t2,sub,output)
+		writeSub(num + numOffset,t1,t2,sub,outputFile)
 	end
 	output:close()
 end
