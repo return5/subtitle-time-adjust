@@ -13,6 +13,7 @@ Provide as cmd line args: the input file, time in milliseconds to offset time co
   - increment or decrement the duration that the subtitle is shown on screen rather than offsetting the time code of when the subtitles appear on screen.
 - -b
   - increment the time code in which the subtitle appears on screen plus also increment or decrement the duration that the subtitle is shown on screen.
+    - this flag require you to provide an extra argument: ```srtadjust -b [inputfile] [timeOffset] [numOffset] [displayIncr] [outputfile]```
 
 ### example1:
 input file:  
@@ -31,7 +32,7 @@ Such fun!
 We're not often entertained like this!
 
 ```
-using this command we will increment the time code when the subtitles appear on screen by one second, we also increase subtitle number by two:  
+using this command we will increment the time code when the subtitles appear on screen by 10 seconds, we also increase subtitle number by two:  
 ```lua srtadjust inputfile 10000 2 outputfile```  
 it will write this to 'outputfile'  
 ```
