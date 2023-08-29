@@ -112,9 +112,7 @@ end
 
 local function lFlag()
 	checkInputs(#arg <= 5, "error: too many arguments.\n")
-	local t <const> =  checkInputArgs(2,3,4,5)
-	t[#t + 1] = 0
-	return t
+	return checkInputArgs(2,3,4,5)
 end
 
 local function bFlag()
