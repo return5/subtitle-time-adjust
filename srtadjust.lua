@@ -112,7 +112,9 @@ end
 
 local function lFlag()
 	checkInputs(#arg <= 5, "error: too many arguments.\n")
-	return checkInputArgs(2,3,4,5),0
+	local t <const> =  checkInputArgs(2,3,4,5)
+	t[#t + 1] = 0
+	return t
 end
 
 local function bFlag()
@@ -141,7 +143,7 @@ local function main()
 		local t2 <const> = getMils(h2,m2,s2,ms2) + t2Offset
 		writeSub(num + numOffset,t1,t2,sub,outputFile)
 	end
-	output:close()
+	outputFile:close()
 end
 
 main()
