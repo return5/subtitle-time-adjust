@@ -20,41 +20,23 @@
 
 local floor <const> = math.floor
 
-local function getMils(h,m,s,mil)
-	 return h * 3600000 + m * 60000 + s * 1000 + mil
-end
+local function getMils(h,m,s,mil) return h * 3600000 + m * 60000 + s * 1000 + mil end
 
-local function getHours(time)
-	return floor(time / 3600000 )
-end
+local function getHours(time) return floor(time / 3600000 ) end
 
-local function removeHours(time)
-	return time % 3600000
-end
+local function removeHours(time) return time % 3600000 end
 
-local function removeMins(time)
-	return time % 60000
-end
+local function removeMins(time) return time % 60000 end
 
-local function getMinutes(time)
-	return floor(time / 60000)
-end
+local function getMinutes(time) return floor(time / 60000) end
 
-local function getSeconds(time)
-	return floor(time / 1000 )
-end
+local function getSeconds(time) return floor(time / 1000 ) end
 
-local function getMilSec(time)
-	return floor( time % 1000 )
-end
+local function getMilSec(time) return floor( time % 1000 ) end
 
-local function leadingZero(time)
-	return time < 10 and "0" .. time or time
-end
+local function leadingZero(time) return time < 10 and "0" .. time or time end
 
-local function leadingZeroMS(time)
-	return (time < 10 and "00" .. time) or (time < 100 and "0" .. time) or time
-end
+local function leadingZeroMS(time) return (time < 10 and "00" .. time) or (time < 100 and "0" .. time) or time end
 
 local function adjustTime(time)
 	local hour <const> = getHours(time)
@@ -74,30 +56,18 @@ local function writeSub(num,t1,t2,sub,file)
 end
 
 local function printHelp()
-	io.write("program to adjust the time codes of subtitles.\n")
-	io.write("srtadjust [flags] [inputfile] [timeOffset] [numOffset] [outputfile]\n")
-	io.write("\tinputfile: srt file which contains the subtitles.\n")
-	io.write("\ttimeOffset: time in milliseconds to adjust the subtitles.\n")
-	io.write("\tnumOffset: integer value to increase the subtitle count by.\n")
-	io.write("\toutputfile: file to write the adjusted subtitles to.\n")
-	io.write("flags\n")
-	io.write("\t-h --help  printHelp message.\n")
-	io.write("\t-l instead of offsetting both time codes,instead increase time subtitles on screen by milliseconds.\n")
-	io.write("\t-b offset timecodes and also increase time of subtitles on screen. this options requires 5 args:\n")
-	io.write("\t\tsrtadjust -b [inputfile] [timeOffset] [numOffset] [displayIncr] [outputfile]\n")
+	io.write("program to adjust the time codes of subtitles.\n", "srtadjust [flags] [inputfile] [timeOffset] [numOffset] [outputfile]\n",
+	"\tinputfile: srt file which contains the subtitles.\n", "\ttimeOffset: time in milliseconds to adjust the subtitles.\n",
+	"\tnumOffset: integer value to increase the subtitle count by.\n", "\toutputfile: file to write the adjusted subtitles to.\n",
+	"  flags\n", "\t-h --help  printHelp message.\n",
+	"\t-l instead of offsetting both time codes,instead increase time subtitles on screen by milliseconds.\n",
+	"\t-b offset timecodes and also increase time of subtitles on screen. this options requires 5 args:\n",
+	"\t\tsrtadjust -b [inputfile] [timeOffset] [numOffset] [displayIncr] [outputfile]\n")
 end
 
-local function printAndExit()
-	printHelp()
-	os.exit(-1)
-end
+local function printAndExit() printHelp();os.exit(-1) end
 
-local function checkInputs(input,message)
-	if not input then
-		io.stderr:write(message)
-		printAndExit()
-	end
-end
+local function checkInputs(input,message) if not input then io.stderr:write(message);printAndExit() end end
 
 local function checkInputArgs(inputI,timeI,numI,outputI)
 	local offset <const> = arg[timeI]
