@@ -44,7 +44,7 @@ local function adjustTime(time)
 	local minutes <const> = getMinutes(noHour)
 	local noMin <const> = removeMins(noHour)
 	local sec <const> = getSeconds(noMin)
-	local mils = getMilSec(noMin)
+	local mils <const> = getMilSec(noMin)
 	return hour,minutes,sec,mils
 end
 
@@ -98,7 +98,7 @@ local function main()
 	checkInputs(arg[1],"error: did not include any arguments.\n")
 	local flagsTable <const> = {["-h"] = printAndExit, ["--help"] = printAndExit, ["-b"] = bFlag,["-l"] = lFlag}
 	local input,offset <const>,numOffset <const>,output <const>,displayIncr <const> = table.unpack((flagsTable[arg[1]] and flagsTable[arg[1]]()) or checkInputArgs(1,2,3,4))
-	local file = io.open(input,"r")
+	local file <const> = io.open(input,"r")
 	checkInputs(file,"error: cannot open file\n")
 	local text  <const> = file:read("*a")
 	file:close()
