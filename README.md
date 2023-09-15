@@ -78,7 +78,7 @@ the subtitles now stay on screen for one second longer.
 
 
 ### example3  
-using the input file form example 1 we can increase the time code when subtitles appear by two seconds and also increase the duration they stay on screen by one second: 
+using the input file from example 1 we can increase the time code when subtitles appear by two seconds and also increase the duration they stay on screen by one second: 
 
 using this command:  
 ```lua srtadjust -b inputfile 2000 0 1000 outputfile```  
@@ -99,5 +99,5 @@ We're not often entertained like this!
 
 ```
 
-the subtitles now appear on screen two seconds later but also stay on screen for one second longer than previous.
+the subtitles now appear on screen two seconds later and also stay on screen for one second longer than previous.
 
